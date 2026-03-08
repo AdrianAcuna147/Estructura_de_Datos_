@@ -1,0 +1,46 @@
+[
+    {
+        "id": 1,
+        "nombre": "Licuadora",
+        "marca": "Oster",
+        "modelo": "Ninja",
+        "numero_serie": "80000239",
+        "stock": 20,
+        "precio_compra": 5000.0,
+        "precio_venta": 5500.0,
+        "fecha_creacion": "2026-02-23 15:45"
+    },
+    {
+        "id": 2,
+        "nombre": "Television",
+        "marca": "Phillips",
+        "modelo": "50 in",
+        "numero_serie": "30008747",
+        "stock": 10,
+        "precio_compra": 0,
+        "precio_venta": 0,
+        "fecha_creacion": "2026-02-23 15:46"
+    },
+    {
+        "id": 3,
+        "nombre": "Refrigerador",
+        "marca": "Mabe",
+        "modelo": "2026",
+        "numero_serie": "40008997",
+        "stock": 10,
+        "precio_compra": 5000.0,
+        "precio_venta": 4500.0,
+        "fecha_creacion": "2026-02-23 15:52"
+    },
+    {
+        "id": 4,
+        "nombre": "Celular",
+        "marca": "Honor",
+        "modelo": "400 lite",
+        "numero_serie": "098095",
+        "stock": 5,
+        "precio_compra": 4500.0,
+        "precio_venta": 5000.0,
+        "fecha_creacion": "2026-02-23 16:09"
+    }
+]

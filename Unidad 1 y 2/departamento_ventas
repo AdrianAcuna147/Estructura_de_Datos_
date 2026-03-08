@@ -1,0 +1,156 @@
+class VentasDepartamentos:
+    """
+    Sistema para gestionar ventas mensuales por departamento
+    """
+    
+    # Constantes para los departamentos
+    ROPA = 0
+    DEPORTES = 1
+    JUGUETERIA = 2
+    NUM_DEPARTAMENTOS = 3
+    NUM_MESES = 12
+    
+    def __init__(self):
+        """Constructor: inicializa el arreglo bidimensional de ventas"""
+        # Crear arreglo bidimensional de 12 meses x 3 departamentos
+        self.ventas = [[0.0 for _ in range(self.NUM_DEPARTAMENTOS)] 
+                       for _ in range(self.NUM_MESES)]
+    
+    # 1. Método para insertar elementos en el arreglo
+    def insertar_venta(self, mes, departamento, monto):
+        """
+        Inserta una venta en el arreglo
+        
+        Args:
+            mes (int): Número del mes (0-11, donde 0 = Enero)
+            departamento (int): Código del departamento (0=Ropa, 1=Deportes, 2=Juguetería)
+            monto (float): Monto de la venta
+        """
+        if 0 <= mes < self.NUM_MESES and 0 <= departamento < self.NUM_DEPARTAMENTOS:
+            self.ventas[mes][departamento] = monto
+            print("Venta insertada correctamente.")
+        else:
+            print("Error: Mes o departamento inválido.")
+    
+    # 2. Método para buscar algún elemento en particular
+    def buscar_venta(self, mes, departamento):
+        """
+        Busca y muestra una venta específica
+        
+        Args:
+            mes (int): Número del mes (0-11)
+            departamento (int): Código del departamento (0-2)
+        """
+        if 0 <= mes < self.NUM_MESES and 0 <= departamento < self.NUM_DEPARTAMENTOS:
+            monto = self.ventas[mes][departamento]
+            nombre_mes = self._obtener_nombre_mes(mes)
+            nombre_departamento = self._obtener_nombre_departamento(departamento)
+            print(f"Venta de {nombre_mes} en {nombre_departamento}: ${monto:.2f}")
+            return monto
+        else:
+            print("Error: Mes o departamento inválido.")
+            return None
+    
+    # 3. Método para eliminar una venta en particular de algún departamento
+    def eliminar_venta(self, mes, departamento):
+        """
+        Elimina (pone en 0) una venta específica
+        
+        Args:
+            mes (int): Número del mes (0-11)
+            departamento (int): Código del departamento (0-2)
+        """
+        if 0 <= mes < self.NUM_MESES and 0 <= departamento < self.NUM_DEPARTAMENTOS:
+            self.ventas[mes][departamento] = 0.0
+            print("Venta eliminada correctamente.")
+        else:
+            print("Error: Mes o departamento inválido.")
+    
+    # Métodos auxiliares
+    def _obtener_nombre_mes(self, mes):
+        """Retorna el nombre del mes dado su índice"""
+        meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                 "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+        return meses[mes]
+    
+    def _obtener_nombre_departamento(self, departamento):
+        """Retorna el nombre del departamento dado su índice"""
+        departamentos = ["Ropa", "Deportes", "Juguetería"]
+        return departamentos[departamento]
+    
+    def mostrar_todas_las_ventas(self):
+        """Muestra todas las ventas en formato de tabla"""
+        print("\n=== VENTAS MENSUALES POR DEPARTAMENTO ===")
+        print(f"{'Mes':<15} {'Ropa':<15} {'Deportes':<15} {'Juguetería':<15}")
+        print("-" * 60)
+        
+        for mes in range(self.NUM_MESES):
+            print(f"{self._obtener_nombre_mes(mes):<15} "
+                  f"${self.ventas[mes][self.ROPA]:<14.2f} "
+                  f"${self.ventas[mes][self.DEPORTES]:<14.2f} "
+                  f"${self.ventas[mes][self.JUGUETERIA]:<14.2f}")
+    
+    def mostrar_totales_por_departamento(self):
+        """Calcula y muestra los totales por departamento"""
+        print("\n=== TOTALES POR DEPARTAMENTO ===")
+        for dept in range(self.NUM_DEPARTAMENTOS):
+            total = sum(self.ventas[mes][dept] for mes in range(self.NUM_MESES))
+            print(f"{self._obtener_nombre_departamento(dept)}: ${total:.2f}")
+
+
+def menu_principal():
+    """Función principal para interactuar con el sistema"""
+    sistema = VentasDepartamentos()
+    
+    while True:
+        print("\n=== SISTEMA DE VENTAS DEPARTAMENTALES ===")
+        print("1. Insertar venta")
+        print("2. Buscar venta")
+        print("3. Eliminar venta")
+        print("4. Mostrar todas las ventas")
+        print("5. Mostrar totales por departamento")
+        print("6. Salir")
+        
+        try:
+            opcion = int(input("Seleccione una opción: "))
+            
+            if opcion == 1:
+                mes = int(input("Mes (0-11, donde 0=Enero): "))
+                print("Departamento (0=Ropa, 1=Deportes, 2=Juguetería): ")
+                departamento = int(input())
+                monto = float(input("Monto de la venta: $"))
+                sistema.insertar_venta(mes, departamento, monto)
+                
+            elif opcion == 2:
+                mes = int(input("Mes (0-11, donde 0=Enero): "))
+                print("Departamento (0=Ropa, 1=Deportes, 2=Juguetería): ")
+                departamento = int(input())
+                sistema.buscar_venta(mes, departamento)
+                
+            elif opcion == 3:
+                mes = int(input("Mes (0-11, donde 0=Enero): "))
+                print("Departamento (0=Ropa, 1=Deportes, 2=Juguetería): ")
+                departamento = int(input())
+                sistema.eliminar_venta(mes, departamento)
+                
+            elif opcion == 4:
+                sistema.mostrar_todas_las_ventas()
+                
+            elif opcion == 5:
+                sistema.mostrar_totales_por_departamento()
+                
+            elif opcion == 6:
+                print("¡Hasta luego!")
+                break
+                
+            else:
+                print("Opción inválida.")
+                
+        except ValueError:
+            print("Error: Por favor ingrese un valor numérico válido.")
+        except Exception as e:
+            print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    menu_principal()

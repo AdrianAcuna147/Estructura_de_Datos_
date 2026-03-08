@@ -1,0 +1,148 @@
+import tkinter as tk
+from tkinter import messagebox
+import random
+
+MAX = 6
+
+class Pila(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Pila (Stack)")
+        self.resizable(False, False)
+        self.configure(bg="#f0f4f8")
+
+        self.stack = []
+
+        # ── Título
+        tk.Label(self, text="Pila (Stack)", font=("Arial", 18, "bold"),
+                 bg="#f0f4f8", fg="#1a1a2e").pack(pady=(16, 4))
+        tk.Label(self, text="LIFO — El último en entrar es el primero en salir",
+                 font=("Arial", 9), bg="#f0f4f8", fg="#888").pack()
+
+        # ── Canvas donde se dibuja la pila
+        self.canvas = tk.Canvas(self, width=200, height=300,
+                                bg="white", highlightthickness=1,
+                                highlightbackground="#ccc")
+        self.canvas.pack(pady=16, padx=30)
+
+        # ── Entrada + botones
+        frame = tk.Frame(self, bg="#f0f4f8")
+        frame.pack(pady=4)
+
+        self.entry = tk.Entry(frame, font=("Arial", 13), width=8,
+                              relief="solid", bd=1)
+        self.entry.grid(row=0, column=0, columnspan=2, pady=6, padx=4)
+        self.entry.bind("<Return>", lambda e: self.push())
+
+        tk.Button(frame, text="PUSH  ↑", font=("Arial", 11, "bold"),
+                  bg="#4CAF50", fg="white", relief="flat",
+                  padx=12, pady=6, cursor="hand2",
+                  command=self.push).grid(row=1, column=0, padx=4)
+
+        tk.Button(frame, text="POP  ↓", font=("Arial", 11, "bold"),
+                  bg="#f44336", fg="white", relief="flat",
+                  padx=12, pady=6, cursor="hand2",
+                  command=self.pop).grid(row=1, column=1, padx=4)
+
+        tk.Button(frame, text="🎲 Llenar aleatoria", font=("Arial", 10),
+                  bg="#2196F3", fg="white", relief="flat",
+                  padx=8, pady=5, cursor="hand2",
+                  command=self.llenar_random).grid(row=2, column=0, columnspan=2,
+                                                   pady=(8,2), sticky="ew", padx=4)
+
+        tk.Button(frame, text="🗑 Eliminar pila completa", font=("Arial", 10),
+                  bg="#FF9800", fg="white", relief="flat",
+                  padx=8, pady=5, cursor="hand2",
+                  command=self.limpiar).grid(row=3, column=0, columnspan=2,
+                                             pady=(2,4), sticky="ew", padx=4)
+
+        # ── Estado
+        self.estado = tk.StringVar(value="La pila está vacía.")
+        tk.Label(self, textvariable=self.estado, font=("Arial", 10),
+                 bg="#f0f4f8", fg="#555").pack(pady=(8, 16))
+
+        self.dibujar()
+
+    # ─── Lógica ────────────────────────────────
+    def push(self):
+        val = self.entry.get().strip()
+        if not val:
+            self.estado.set("⚠ Escribe un valor primero.")
+            return
+        if len(self.stack) >= MAX:
+            self.estado.set("⚠ Pila llena (máx. 6 elementos).")
+            return
+        self.stack.append(val)
+        self.entry.delete(0, "end")
+        self.estado.set(f"✔ Se agregó '{val}' al tope.")
+        self.dibujar()
+
+    def llenar_random(self):
+        faltantes = MAX - len(self.stack)
+        if faltantes == 0:
+            self.estado.set("⚠ La pila ya está llena.")
+            return
+        for _ in range(faltantes):
+            self.stack.append(random.randint(1, 99))
+        self.estado.set(f"🎲 Se llenó la pila con {faltantes} valores aleatorios.")
+        self.dibujar()
+
+    def limpiar(self):
+        if not self.stack:
+            self.estado.set("⚠ La pila ya está vacía.")
+            return
+        self.stack.clear()
+        self.estado.set("🗑 Pila eliminada por completo.")
+        self.dibujar()
+
+    def pop(self):
+        if not self.stack:
+            self.estado.set("⚠ La pila está vacía.")
+            return
+        val = self.stack.pop()
+        self.estado.set(f"✔ Se eliminó '{val}' del tope.")
+        self.dibujar()
+
+    # ─── Dibujo ────────────────────────────────
+    def dibujar(self):
+        self.canvas.delete("all")
+
+        W, H = 200, 300
+        BH   = 40          # alto de cada bloque
+        BX1, BX2 = 20, 180 # límites horizontales
+        BASE = H - 20      # y de la base
+
+        COLORES = ["#4CAF50","#2196F3","#FF9800","#9C27B0",
+                   "#00BCD4","#E91E63"]
+
+        # base y paredes
+        self.canvas.create_rectangle(BX1, 30, BX2, BASE,
+                                     outline="#bbb", width=2, fill="white")
+
+        # bloques
+        for i, val in enumerate(self.stack):
+            y2 = BASE - i * BH
+            y1 = y2 - BH
+            color = COLORES[i % len(COLORES)]
+
+            self.canvas.create_rectangle(BX1, y1, BX2, y2,
+                                         fill=color, outline="white", width=2)
+            self.canvas.create_text((BX1+BX2)//2, (y1+y2)//2,
+                                    text=val, font=("Arial", 13, "bold"),
+                                    fill="white")
+
+            # etiqueta TOP en el último bloque
+            if i == len(self.stack) - 1:
+                self.canvas.create_text(BX2 + 2, (y1+y2)//2,
+                                        text=" ◄ TOP", anchor="w",
+                                        font=("Arial", 9, "bold"),
+                                        fill="#333")
+
+        # etiqueta vacío
+        if not self.stack:
+            self.canvas.create_text(W//2, H//2, text="(vacía)",
+                                    font=("Arial", 11), fill="#ccc")
+
+
+if __name__ == "__main__":
+    Pila().mainloop()

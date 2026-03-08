@@ -1,0 +1,13 @@
+Fruta = []
+
+Fruta.append("Manzana")
+Fruta.append("Pera")
+Fruta.append("Uvas")
+Fruta.append("Platano")
+print(Fruta)
+
+Fruta.pop(2)
+Fruta.pop(0)
+
+Fruta.append("Sandia")
+print(Fruta)

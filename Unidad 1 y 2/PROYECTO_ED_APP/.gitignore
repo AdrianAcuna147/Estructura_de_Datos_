@@ -1,0 +1,21 @@
+.web
+__pycache__/
+*.py[cod]
+.states
+*.db
+assets/external/
+
+# ARCHIVOS SENSIBLES (NUNCA SUBIR A GITHUB)
+.env
+.env.local
+.env.*.local
+email_config.py
+
+# ENTORNOS VIRTUALES
+venv/
+env/
+ENV/
+
+# ARCHIVOS TEMPORALES
+*.log
+*.tmp

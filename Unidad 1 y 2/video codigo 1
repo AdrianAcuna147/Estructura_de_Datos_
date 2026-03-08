@@ -1,0 +1,7 @@
+calificaciones = [0] * 5
+
+for i in range(5):
+    calificaciones[i] = int(input("captura la calificacion: "))
+
+for i in range(5):  
+    print(f"la calificacion {i +1} es: {calificaciones[i]}")

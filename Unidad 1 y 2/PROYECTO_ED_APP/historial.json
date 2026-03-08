@@ -1,0 +1,110 @@
+[
+    {
+        "tipo": "Cliente",
+        "nombre": "Adrian",
+        "correo": "nombre_123@correo.com",
+        "numero_factura": "1",
+        "producto": "Licuadora",
+        "monto": 3500.0,
+        "fecha": "12/02/2026 10:31:34"
+    },
+    {
+        "tipo": "Proveedor",
+        "nombre": "Jose",
+        "correo": "someone_456@correo.com",
+        "numero_factura": "2",
+        "producto": "Celular",
+        "monto": 1200.0,
+        "fecha": "12/02/2026 10:34:01"
+    },
+    {
+        "tipo": "Cliente",
+        "nombre": "Adolfo",
+        "correo": "adolfo@correo.com",
+        "numero_factura": "3",
+        "producto": "Television 50 in",
+        "monto": 1500.0,
+        "fecha": "12/02/2026 12:14:14"
+    },
+    {
+        "tipo": "Cliente",
+        "nombre": "Juan",
+        "correo": "juan@correo.com",
+        "numero_factura": "2",
+        "producto": "Lavadora",
+        "monto": 2000.0,
+        "fecha": "12/02/2026 12:19:24"
+    },
+    {
+        "tipo": "Proveedor",
+        "nombre": "Karla",
+        "correo": "karla@correo.com",
+        "numero_factura": "5",
+        "producto": "Lavadora",
+        "monto": 5600.0,
+        "fecha": "18/02/2026 10:24:43"
+    },
+    {
+        "tipo": "Cliente",
+        "nombre": "tw",
+        "correo": "te@correo.com",
+        "numero_factura": "2341456",
+        "producto": "Television 50 in",
+        "monto": 4000.0,
+        "fecha": "19/02/2026 12:59:44"
+    },
+    {
+        "tipo": "Cliente",
+        "nombre": "adrian",
+        "correo": "adrian",
+        "numero_factura": "349538",
+        "producto": "Licuadora",
+        "monto": 200.0,
+        "fecha": "19/02/2026 13:05:35"
+    },
+    {
+        "tipo": "Cliente",
+        "nombre": "armando",
+        "correo": "armando@.com.mx.xyz",
+        "numero_factura": "89799078",
+        "producto": "Lavadora",
+        "monto": 5.0,
+        "fecha": "19/02/2026 13:17:47"
+    },
+    {
+        "tipo": "Cliente",
+        "nombre": "jesus",
+        "correo": "sssss",
+        "numero_factura": "1",
+        "producto": "Lavadora",
+        "monto": 5500.0,
+        "fecha": "23/02/2026 07:46:35"
+    },
+    {
+        "tipo": "Cliente",
+        "nombre": "jesus",
+        "correo": "ssssss",
+        "numero_factura": "123",
+        "producto": "Lavadora",
+        "monto": 2000.0,
+        "fecha": "23/02/2026 07:47:24"
+    },
+    {
+        "tipo": "Cliente",
+        "nombre": "Ernesto",
+        "correo": "okdvejoñfvkljf",
+        "numero_factura": "09787",
+        "producto": "Radio",
+        "monto": 0.0,
+        "fecha": "23/02/2026 11:04:57"
+    },
+    {
+        "tipo": "Cliente",
+        "nombre": "Fabian",
+        "correo": "fabi@hotmail.com",
+        "numero_factura": "08990979",
+        "producto": "Lavadora",
+        "monto": 0.0,
+        "fecha": "23/02/2026 11:10:55"
+    }
+]

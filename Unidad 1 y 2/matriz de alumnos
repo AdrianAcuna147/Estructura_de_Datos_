@@ -1,0 +1,315 @@
+import random
+import time
+import sys
+
+# Configuración de la matriz MASIVA
+NUM_ALUMNOS = 100000  # 100,000 alumnos (FILAS)
+NUM_MATERIAS = 6       # 6 materias (COLUMNAS)
+
+# Nombres de las materias
+NOMBRES_MATERIAS = [
+    "Matemáticas",
+    "Física",
+    "Química",
+    "Historia",
+    "Literatura",
+    "Inglés"
+]
+
+print("\n" + "╔" + "═"*70 + "╗")
+print("║" + " "*12 + "🎓 SISTEMA DE CALIFICACIONES - CARGA ULTRA MASIVA" + " "*9 + "║")
+print("╚" + "═"*70 + "╝")
+print(f"\n  📊 Configuración:")
+print(f"     • Alumnos (filas):   {NUM_ALUMNOS:,}")
+print(f"     • Materias (columnas): {NUM_MATERIAS}")
+print(f"     • Total de calificaciones: {NUM_ALUMNOS * NUM_MATERIAS:,}")
+print("\n  ⏳ Iniciando carga de datos...")
+print("─"*72)
+
+# MEDIR TIEMPO DE CREACIÓN DE LA MATRIZ
+tiempo_inicio = time.time()
+
+# Crear matriz: 100,000 alumnos (filas) x 6 materias (columnas)
+calificaciones = []
+
+progreso_anterior = -1
+for i in range(NUM_ALUMNOS):
+    # Mostrar progreso cada 1%
+    porcentaje = int((i / NUM_ALUMNOS) * 100)
+    if porcentaje != progreso_anterior and porcentaje % 5 == 0:
+        print(f"  Generando datos... {porcentaje:3d}% completado ({i:,}/{NUM_ALUMNOS:,} alumnos)")
+        progreso_anterior = porcentaje
+    
+    # Crear fila con 6 calificaciones
+    fila = [random.randint(1, 10) for _ in range(NUM_MATERIAS)]
+    calificaciones.append(fila)
+
+tiempo_fin = time.time()
+tiempo_total = tiempo_fin - tiempo_inicio
+
+# Calcular tamaño en memoria (aproximado)
+tamaño_bytes = sys.getsizeof(calificaciones)
+for fila in calificaciones[:1000]:
+    tamaño_bytes += sys.getsizeof(fila)
+    tamaño_bytes += sum(sys.getsizeof(item) for item in fila)
+tamaño_bytes = tamaño_bytes * (NUM_ALUMNOS / 1000)
+tamaño_mb = tamaño_bytes / (1024 * 1024)
+
+print("─"*72)
+print("\n" + "╔" + "═"*70 + "╗")
+print("║" + " "*23 + "✅ CARGA COMPLETADA" + " "*28 + "║")
+print("╚" + "═"*70 + "╝")
+
+print("\n📈 ESTADÍSTICAS DE RENDIMIENTO:")
+print("┌" + "─"*70 + "┐")
+print(f"│ Tiempo de carga total:         {tiempo_total:10.4f} segundos           │")
+print(f"│ Calificaciones generadas:      {NUM_ALUMNOS * NUM_MATERIAS:10,} elementos         │")
+print(f"│ Velocidad de generación:       {(NUM_ALUMNOS * NUM_MATERIAS)/tiempo_total:10,.0f} calif./segundo    │")
+print(f"│ Tamaño aproximado en memoria:  {tamaño_mb:10.2f} MB                  │")
+print(f"│ Estructura:                    {NUM_ALUMNOS:,} filas × {NUM_MATERIAS} columnas    │")
+print("└" + "─"*70 + "┘")
+
+def visualizar_tabla_completa():
+    """Visualiza TODOS los 100,000 alumnos"""
+    print("\n" + "="*100)
+    print(f"TABLA COMPLETA DE CALIFICACIONES - TODOS LOS {NUM_ALUMNOS:,} ALUMNOS")
+    print("="*100)
+    print("\n⏳ Generando visualización completa...")
+    
+    tiempo_inicio_viz = time.time()
+    
+    # Encabezado
+    print("\n┌" + "─"*12 + "┬", end="")
+    for i in range(NUM_MATERIAS):
+        print("─"*15 + ("┬" if i < NUM_MATERIAS-1 else "┐"), end="")
+    print()
+    
+    # Nombres de materias
+    print("│ ALUMNO #   │", end="")
+    for materia in range(NUM_MATERIAS):
+        print(f" {NOMBRES_MATERIAS[materia]:13} │", end="")
+    print()
+    
+    # Línea separadora principal
+    print("├" + "─"*12 + "┼", end="")
+    for i in range(NUM_MATERIAS):
+        print("─"*15 + ("┼" if i < NUM_MATERIAS-1 else "┤"), end="")
+    print()
+    
+    # MOSTRAR TODOS LOS ALUMNOS
+    contador_progreso = 0
+    for alumno in range(NUM_ALUMNOS):
+        # Mostrar progreso cada 10,000 alumnos
+        if alumno % 10000 == 0 and alumno > 0:
+            contador_progreso += 1
+            porcentaje = (alumno / NUM_ALUMNOS) * 100
+            print(f"│ {'':10} │ Progreso: {porcentaje:5.1f}% completado ({alumno:,}/{NUM_ALUMNOS:,} alumnos)..." + " "*34 + "│")
+        
+        # Datos del alumno
+        print(f"│ {alumno:10,} │", end="")
+        for materia in range(NUM_MATERIAS):
+            print(f" {calificaciones[alumno][materia]:2}/10          │", end="")
+        print()
+        
+        # Línea separadora cada alumno (solo cada 1000 para optimizar)
+        if alumno < NUM_ALUMNOS - 1 and alumno % 1000 == 999:
+            print("├" + "─"*12 + "┼", end="")
+            for i in range(NUM_MATERIAS):
+                print("─"*15 + ("┼" if i < NUM_MATERIAS-1 else "┤"), end="")
+            print()
+    
+    # Línea final
+    print("└" + "─"*12 + "┴", end="")
+    for i in range(NUM_MATERIAS):
+        print("─"*15 + ("┴" if i < NUM_MATERIAS-1 else "┘"), end="")
+    print()
+    
+    tiempo_fin_viz = time.time()
+    tiempo_viz = tiempo_fin_viz - tiempo_inicio_viz
+    
+    print("\n" + "="*100)
+    print(f"✅ Visualización completa generada en {tiempo_viz:.2f} segundos")
+    print(f"📊 Se mostraron {NUM_ALUMNOS:,} alumnos × {NUM_MATERIAS} materias")
+    print("="*100)
+
+def visualizar_tabla_paginada(alumnos_por_pagina=100):
+    """Visualiza la tabla en páginas de N alumnos"""
+    total_paginas = (NUM_ALUMNOS + alumnos_por_pagina - 1) // alumnos_por_pagina
+    
+    print(f"\n📄 VISUALIZACIÓN PAGINADA: {alumnos_por_pagina} alumnos por página")
+    print(f"📊 Total de páginas: {total_paginas:,}")
+    
+    for pagina in range(total_paginas):
+        inicio = pagina * alumnos_por_pagina
+        fin = min((pagina + 1) * alumnos_por_pagina, NUM_ALUMNOS)
+        
+        print("\n" + "="*100)
+        print(f"PÁGINA {pagina + 1:,}/{total_paginas:,} - Alumnos {inicio:,} al {fin-1:,}")
+        print("="*100)
+        
+        # Encabezado
+        print("\n┌" + "─"*12 + "┬", end="")
+        for i in range(NUM_MATERIAS):
+            print("─"*15 + ("┬" if i < NUM_MATERIAS-1 else "┐"), end="")
+        print()
+        
+        # Nombres de materias
+        print("│ ALUMNO #   │", end="")
+        for materia in range(NUM_MATERIAS):
+            print(f" {NOMBRES_MATERIAS[materia]:13} │", end="")
+        print()
+        
+        # Línea separadora
+        print("├" + "─"*12 + "┼", end="")
+        for i in range(NUM_MATERIAS):
+            print("─"*15 + ("┼" if i < NUM_MATERIAS-1 else "┤"), end="")
+        print()
+        
+        # Datos de la página
+        for alumno in range(inicio, fin):
+            print(f"│ {alumno:10,} │", end="")
+            for materia in range(NUM_MATERIAS):
+                print(f" {calificaciones[alumno][materia]:2}/10          │", end="")
+            print()
+            
+            if alumno < fin - 1:
+                print("├" + "─"*12 + "┼", end="")
+                for i in range(NUM_MATERIAS):
+                    print("─"*15 + ("┼" if i < NUM_MATERIAS-1 else "┤"), end="")
+                print()
+        
+        # Línea final
+        print("└" + "─"*12 + "┴", end="")
+        for i in range(NUM_MATERIAS):
+            print("─"*15 + ("┴" if i < NUM_MATERIAS-1 else "┘"), end="")
+        print()
+        
+        # Pausa entre páginas (excepto en la última)
+        if pagina < total_paginas - 1:
+            respuesta = input(f"\n➡️  Presiona ENTER para siguiente página, 'q' para salir: ")
+            if respuesta.lower() == 'q':
+                print(f"\n⏸️  Visualización detenida en página {pagina + 1}/{total_paginas:,}")
+                break
+
+def visualizar_rango_alumnos(inicio, fin):
+    """Visualiza un rango específico de alumnos"""
+    if inicio < 0 or fin > NUM_ALUMNOS or inicio >= fin:
+        print(f"❌ ERROR: Rango inválido. Debe ser 0 <= inicio < fin <= {NUM_ALUMNOS:,}")
+        return
+    
+    print("\n" + "="*100)
+    print(f"RANGO DE ALUMNOS: {inicio:,} al {fin-1:,} ({fin-inicio:,} alumnos)")
+    print("="*100)
+    
+    # Encabezado
+    print("\n┌" + "─"*12 + "┬", end="")
+    for i in range(NUM_MATERIAS):
+        print("─"*15 + ("┬" if i < NUM_MATERIAS-1 else "┐"), end="")
+    print()
+    
+    # Nombres de materias
+    print("│ ALUMNO #   │", end="")
+    for materia in range(NUM_MATERIAS):
+        print(f" {NOMBRES_MATERIAS[materia]:13} │", end="")
+    print()
+    
+    # Línea separadora
+    print("├" + "─"*12 + "┼", end="")
+    for i in range(NUM_MATERIAS):
+        print("─"*15 + ("┼" if i < NUM_MATERIAS-1 else "┤"), end="")
+    print()
+    
+    # Datos
+    for alumno in range(inicio, fin):
+        print(f"│ {alumno:10,} │", end="")
+        for materia in range(NUM_MATERIAS):
+            print(f" {calificaciones[alumno][materia]:2}/10          │", end="")
+        print()
+        
+        if alumno < fin - 1:
+            print("├" + "─"*12 + "┼", end="")
+            for i in range(NUM_MATERIAS):
+                print("─"*15 + ("┼" if i < NUM_MATERIAS-1 else "┤"), end="")
+            print()
+    
+    # Línea final
+    print("└" + "─"*12 + "┴", end="")
+    for i in range(NUM_MATERIAS):
+        print("─"*15 + ("┴" if i < NUM_MATERIAS-1 else "┘"), end="")
+    print()
+    print("="*100)
+
+def menu_principal():
+    """Menú interactivo del sistema"""
+    while True:
+        print("\n" + "╔" + "═"*70 + "╗")
+        print("║" + " "*17 + "🎓 SISTEMA DE GESTIÓN ULTRA MASIVA" + " "*19 + "║")
+        print("╚" + "═"*70 + "╝")
+        print(f"\n  📊 Sistema: {NUM_ALUMNOS:,} alumnos (filas) × {NUM_MATERIAS} materias (columnas)")
+        print(f"  💾 Total: {NUM_ALUMNOS * NUM_MATERIAS:,} calificaciones en memoria")
+        print("\n  OPCIONES DE VISUALIZACIÓN:")
+        print("  [1] Ver TODA la tabla completa (100,000 alumnos) ⚠️  Toma tiempo")
+        print("  [2] Ver tabla paginada (100 alumnos por página)")
+        print("  [3] Ver tabla paginada (1,000 alumnos por página)")
+        print("  [4] Ver rango específico de alumnos")
+        print("  [5] Ver primeros 100 alumnos")
+        print("  [6] Ver últimos 100 alumnos")
+        print("  [7] Ver alumnos 49,900 a 50,100 (alrededor del 50,000)")
+        print("  [8] Salir")
+        print("─"*72)
+        
+        opcion = input("  Selecciona una opción (1-8): ").strip()
+        
+        if opcion == "1":
+            confirmacion = input(f"\n⚠️  Esto mostrará {NUM_ALUMNOS:,} líneas. ¿Continuar? (s/n): ")
+            if confirmacion.lower() == 's':
+                visualizar_tabla_completa()
+            else:
+                print("❌ Visualización cancelada")
+            input("\nPresiona ENTER para continuar...")
+            
+        elif opcion == "2":
+            visualizar_tabla_paginada(100)
+            
+        elif opcion == "3":
+            visualizar_tabla_paginada(1000)
+            
+        elif opcion == "4":
+            try:
+                inicio = int(input(f"  Desde qué alumno? (0-{NUM_ALUMNOS-1:,}): "))
+                fin = int(input(f"  Hasta qué alumno? ({inicio+1}-{NUM_ALUMNOS:,}): "))
+                visualizar_rango_alumnos(inicio, fin)
+            except ValueError:
+                print("❌ Error: Ingresa números válidos")
+            input("\nPresiona ENTER para continuar...")
+            
+        elif opcion == "5":
+            visualizar_rango_alumnos(0, 100)
+            input("\nPresiona ENTER para continuar...")
+            
+        elif opcion == "6":
+            visualizar_rango_alumnos(NUM_ALUMNOS - 100, NUM_ALUMNOS)
+            input("\nPresiona ENTER para continuar...")
+            
+        elif opcion == "7":
+            visualizar_rango_alumnos(49900, 50100)
+            input("\nPresiona ENTER para continuar...")
+            
+        elif opcion == "8":
+            print("\n" + "╔" + "═"*70 + "╗")
+            print("║" + " "*26 + "👋 ¡Hasta luego!" + " "*29 + "║")
+            print("╚" + "═"*70 + "╝\n")
+            break
+        else:
+            print("❌ Opción no válida.")
+
+# PROGRAMA PRINCIPAL
+if __name__ == "__main__":
+    # Mostrar primeros 20 alumnos como ejemplo
+    print("\n" + "─"*72)
+    print("📝 VISTA PREVIA: Primeros 20 alumnos")
+    print("─"*72)
+    visualizar_rango_alumnos(0, 20)
+    
+    input("\nPresiona ENTER para ir al menú principal...")
+    menu_principal()

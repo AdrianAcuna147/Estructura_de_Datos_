@@ -1,0 +1,47 @@
+[
+    {
+        "tipo": "Cliente",
+        "nombre": "Adrian",
+        "correo": "nombre_123@correo.com",
+        "numero_factura": "1",
+        "producto": "Licuadora",
+        "monto": 3500.0,
+        "fecha": "12/02/2026 10:31:34"
+    },
+    {
+        "tipo": "Proveedor",
+        "nombre": "Jose",
+        "correo": "someone_456@correo.com",
+        "numero_factura": "2",
+        "producto": "Celular",
+        "monto": 1200.0,
+        "fecha": "12/02/2026 10:34:01"
+    },
+    {
+        "tipo": "Cliente",
+        "nombre": "Adolfo",
+        "correo": "adolfo@correo.com",
+        "numero_factura": "3",
+        "producto": "Television 50 in",
+        "monto": 1500.0,
+        "fecha": "12/02/2026 12:14:14"
+    },
+    {
+        "tipo": "Cliente",
+        "nombre": "Juan",
+        "correo": "juan@correo.com",
+        "numero_factura": "2",
+        "producto": "Lavadora",
+        "monto": 2000.0,
+        "fecha": "12/02/2026 12:19:24"
+    },
+    {
+        "tipo": "Proveedor",
+        "nombre": "Karla",
+        "correo": "karla@correo.com",
+        "numero_factura": "5",
+        "producto": "Lavadora",
+        "monto": 5600.0,
+        "fecha": "18/02/2026 10:24:43"
+    }
+]
