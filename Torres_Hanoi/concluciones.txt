@@ -1,0 +1,32 @@
+Torres de Hanói
+métodos utilizados:
+1. hanoi()(método principal)
+
+el método que resuelve el problema siguiendo las reglas del juego 
+
+parámetros:
+n: numero de discos
+origen: donde inician los discos
+auxiliar: la torre de en medio 
+destino: la torre a la que se busca mover todos los discos
+
+2. time.time()
+es la librería que registra el tempo en el que se ejecuta el programa 
+registra el tiempo y calcula cuanto tardo 
+valora si ya pasaron mas de dos minutos para detener el programa
+
+3. input()
+es lo que nos permite ingresar la cantidad de discos que queremos con el teclado 
+
+4. print()
+es la que muestra cuanto tiempo tardo, la cantidad de movimientos que hizo y el tiempo estimado
+Tiempos:
+
+5 discos: 1.7486357688903809 segundos
+10 discos: 4.038697957992554 segundos
+30 discos: 341.44 segundos
+64 discos: 5901807847850.14 segundos o 68307961.2 días o 187145.1 años
+
+conclusión:
+
+Este programa es "fácil" ya que solo es un programa que calcula movimientos, pero al ser exponencial tuve que limitar el código a 2 minutos ya que la primera vez que lo hice después de 20 minutos aun no terminaba de hacer los movimientos, una vez que calcule dos minutos el programa se detiene y hace el calculo de en cuanto tiempo lo terminaría
