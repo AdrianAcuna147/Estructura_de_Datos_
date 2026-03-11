@@ -1,0 +1,54 @@
+class Pila:
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.datos = []
+
+    def push(self, valor):
+        self.datos.append(valor)
+
+    def pop(self):
+        if self.esta_vacia():
+            raise IndexError("Pila vacía")
+        return self.datos.pop()
+
+    def peek(self):
+        return self.datos[-1] if not self.esta_vacia() else None
+
+    def esta_vacia(self):
+        return len(self.datos) == 0
+
+    def __str__(self):
+        return f"{self.nombre}: {self.datos}"
+
+
+pasos = 0
+
+def mover_disco(origen, destino, auxiliar, n):
+    global pasos
+    if n == 0:
+        return
+    mover_disco(origen, auxiliar, destino, n - 1)
+    disco = origen.pop()
+    destino.push(disco)
+    pasos += 1
+    print(f"  Paso {pasos}: disco {disco}  {origen.nombre} → {destino.nombre}")
+    mover_disco(auxiliar, destino, origen, n - 1)
+
+
+def main():
+    global pasos
+    n = 3
+
+    torre_a = Pila("A")
+    torre_b = Pila("B")
+    torre_c = Pila("C")
+
+    for disco in range(n, 0, -1):
+        torre_a.push(disco)
+
+    mover_disco(torre_a, torre_c, torre_b, n)
+    print(f"\n  Total de movimientos: {pasos}")
+
+
+if __name__ == "__main__":
+    main()
