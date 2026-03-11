@@ -1,0 +1,106 @@
+class Cola:
+    def __init__(self):
+        self.datos = []
+
+    def encolar(self, valor):
+        self.datos.append(valor)
+
+    def desencolar(self):
+        if self.esta_vacia():
+            raise IndexError("Cola vacía")
+        return self.datos.pop(0)
+
+    def esta_vacia(self):
+        return len(self.datos) == 0
+
+    def tamanio(self):
+        return len(self.datos)
+
+
+# ── Servicios disponibles ─────────────────────────────────────
+SERVICIOS = {
+    1: "Emisión de pólizas",
+    2: "Siniestros",
+    3: "Pagos y cobranzas",
+    4: "Consultas generales",
+}
+
+# Una cola por servicio y un contador de turnos por servicio
+colas    = {s: Cola() for s in SERVICIOS}
+contadores = {s: 0 for s in SERVICIOS}
+
+
+def agregar_cliente(servicio):
+    if servicio not in SERVICIOS:
+        print(f"  Error: servicio {servicio} no existe.")
+        return
+    contadores[servicio] += 1
+    turno = f"{servicio:02d}-{contadores[servicio]:03d}"
+    colas[servicio].encolar(turno)
+    print(f"  Turno asignado: {turno}  |  {SERVICIOS[servicio]}")
+
+
+def atender_cliente(servicio):
+    if servicio not in SERVICIOS:
+        print(f"  Error: servicio {servicio} no existe.")
+        return
+    if colas[servicio].esta_vacia():
+        print(f"  Sin clientes en espera para: {SERVICIOS[servicio]}")
+        return
+    turno = colas[servicio].desencolar()
+    print(f"  Llamando turno: {turno}  |  {SERVICIOS[servicio]}  |  En espera: {colas[servicio].tamanio()}")
+
+
+def mostrar_estado():
+    print("\n  ┌─────────────────────────────────────────────┐")
+    print("  │              ESTADO DE COLAS                │")
+    print("  ├────┬────────────────────────┬───────────────┤")
+    print("  │ N° │ Servicio               │ En espera     │")
+    print("  ├────┼────────────────────────┼───────────────┤")
+    for s, nombre in SERVICIOS.items():
+        n = colas[s].tamanio()
+        print(f"  │ {s}  │ {nombre:<22} │ {n:<13} │")
+    print("  └────┴────────────────────────┴───────────────┘\n")
+
+
+def mostrar_menu():
+    print("\n  Servicios disponibles:")
+    for s, nombre in SERVICIOS.items():
+        print(f"    {s} - {nombre}")
+    print("\n  Comandos:")
+    print("    C <n°>  → agregar cliente al servicio n°")
+    print("    A <n°>  → atender siguiente cliente del servicio n°")
+    print("    E       → ver estado de las colas")
+    print("    S       → salir\n")
+
+
+# ── Loop principal ────────────────────────────────────────────
+mostrar_menu()
+
+while True:
+    entrada = input("  > ").strip().upper().split()
+
+    if not entrada:
+        continue
+
+    comando = entrada[0]
+
+    if comando == 'S':
+        print("  Sistema cerrado.\n")
+        break
+
+    elif comando == 'E':
+        mostrar_estado()
+
+    elif comando in ('C', 'A'):
+        if len(entrada) < 2 or not entrada[1].isdigit():
+            print("  Error: ingrese un número de servicio. Ej: C 1")
+            continue
+        servicio = int(entrada[1])
+        if comando == 'C':
+            agregar_cliente(servicio)
+        else:
+            atender_cliente(servicio)
+
+    else:
+        print("  Comando no reconocido. Use C, A, E o S.")
