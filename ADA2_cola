@@ -1,0 +1,51 @@
+class Cola:
+    def __init__(self):
+        self.datos = []
+
+    def encolar(self, valor):
+        self.datos.append(valor)
+
+    def desencolar(self):
+        if self.esta_vacia():
+            raise IndexError("Cola vacía")
+        return self.datos.pop(0)
+
+    def esta_vacia(self):
+        return len(self.datos) == 0
+
+    def tamanio(self):
+        return len(self.datos)
+
+    def __str__(self):
+        return str(self.datos)
+
+
+def suma_colas(cola_a, cola_b):
+    if cola_a.tamanio() != cola_b.tamanio():
+        raise ValueError("Las colas deben tener el mismo tamaño")
+
+    resultado = Cola()
+    while not cola_a.esta_vacia() and not cola_b.esta_vacia():
+        resultado.encolar(cola_a.desencolar() + cola_b.desencolar())
+    return resultado
+
+
+# ── Main ──────────────────────────────────────────────────────
+cola_a = Cola()
+cola_b = Cola()
+
+for n in [9, 7, 10, 8, 12]:
+    cola_a.encolar(n)
+
+for n in [6, 7, 32, 24, 8]:
+    cola_b.encolar(n)
+
+elementos_a = list(cola_a.datos)
+elementos_b = list(cola_b.datos)
+
+resultado = suma_colas(cola_a, cola_b)
+
+print(f"  {'Cola A':<12} {'Cola B':<12} {'Resultado'}")
+print("  " + "-" * 36)
+for a, b, r in zip(elementos_a, elementos_b, resultado.datos):
+    print(f"  {a:<12} {b:<12} {r}")
