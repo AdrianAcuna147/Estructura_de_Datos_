@@ -1,0 +1,126 @@
+class Pila:
+    def __init__(self):
+        self.datos = []
+
+    def push(self, valor):
+        self.datos.append(valor)
+
+    def pop(self):
+        if self.esta_vacia():
+            raise IndexError("Pila vacía")
+        return self.datos.pop()
+
+    def peek(self):
+        return self.datos[-1]
+
+    def esta_vacia(self):
+        return len(self.datos) == 0
+
+    def __str__(self):
+        return str(self.datos)
+
+
+def es_operador(token):
+    return token in ('+', '-', '*', '/')
+
+
+def es_numero(token):
+    try:
+        float(token)
+        return True
+    except ValueError:
+        return False
+
+
+def aplicar_operacion(op, a, b):
+    if op == '+': return a + b
+    if op == '-': return a - b
+    if op == '*': return a * b
+    if op == '/':
+        if b == 0:
+            raise ZeroDivisionError("División entre cero")
+        return a / b
+
+
+def formatear(n):
+    return int(n) if isinstance(n, float) and n.is_integer() else round(n, 6)
+
+
+# ── Evaluador Posfija ─────────────────────────────────────────
+def evaluar_posfija(expresion):
+    tokens = expresion.strip().split()
+    pila = Pila()
+
+    for token in tokens:
+        if es_numero(token):
+            pila.push(float(token))
+        elif es_operador(token):
+            if len(pila.datos) < 2:
+                raise ValueError("Expresión inválida: faltan operandos")
+            b = pila.pop()
+            a = pila.pop()
+            pila.push(aplicar_operacion(token, a, b))
+        else:
+            raise ValueError(f"Token inválido: '{token}'")
+
+    if len(pila.datos) != 1:
+        raise ValueError("Expresión malformada")
+
+    return pila.pop()
+
+
+# ── Evaluador Prefija ─────────────────────────────────────────
+def evaluar_prefija(expresion):
+    tokens = expresion.strip().split()
+    pila = Pila()
+
+    for token in reversed(tokens):
+        if es_numero(token):
+            pila.push(float(token))
+        elif es_operador(token):
+            if len(pila.datos) < 2:
+                raise ValueError("Expresión inválida: faltan operandos")
+            a = pila.pop()
+            b = pila.pop()
+            pila.push(aplicar_operacion(token, a, b))
+        else:
+            raise ValueError(f"Token inválido: '{token}'")
+
+    if len(pila.datos) != 1:
+        raise ValueError("Expresión malformada")
+
+    return pila.pop()
+
+
+# ── Menú principal ────────────────────────────────────────────
+def main():
+    while True:
+        print("\n usa espcacios para separar los nunmeros y signos")
+        print("\n  [1] Notación Posfija  (ej: 3 4 + 2 *)")
+        print("  [2] Notación Prefija  (ej: * + 3 4 2)")
+        print("  [0] Salir")
+        opcion = input("\n  Opción: ").strip()
+
+        if opcion == '0':
+            print("  Hasta luego.\n")
+            break
+        elif opcion not in ('1', '2'):
+            print("  Opción inválida.")
+            continue
+
+        expresion = input("  Expresión: ").strip()
+        if not expresion:
+            continue
+
+        try:
+            if opcion == '1':
+                resultado = evaluar_posfija(expresion)
+            else:
+                resultado = evaluar_prefija(expresion)
+            print(f"\n  Resultado: {formatear(resultado)}")
+        except (ValueError, ZeroDivisionError, IndexError) as e:
+            print(f"\n  Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
