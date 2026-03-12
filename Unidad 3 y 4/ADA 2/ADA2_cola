@@ -13,7 +13,7 @@ class Cola:
     def esta_vacia(self):
         return len(self.datos) == 0
 
-    def tamanio(self):
+    def tamaño(self):
         return len(self.datos)
 
     def __str__(self):
@@ -21,7 +21,7 @@ class Cola:
 
 
 def suma_colas(cola_a, cola_b):
-    if cola_a.tamanio() != cola_b.tamanio():
+    if cola_a.tamaño() != cola_b.tamaño():
         raise ValueError("Las colas deben tener el mismo tamaño")
 
     resultado = Cola()
@@ -29,8 +29,6 @@ def suma_colas(cola_a, cola_b):
         resultado.encolar(cola_a.desencolar() + cola_b.desencolar())
     return resultado
 
-
-# ── Main ──────────────────────────────────────────────────────
 cola_a = Cola()
 cola_b = Cola()
 
