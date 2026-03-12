@@ -46,7 +46,6 @@ def formatear(n):
     return int(n) if isinstance(n, float) and n.is_integer() else round(n, 6)
 
 
-# ── Evaluador Posfija ─────────────────────────────────────────
 def evaluar_posfija(expresion):
     tokens = expresion.strip().split()
     pila = Pila()
@@ -69,7 +68,7 @@ def evaluar_posfija(expresion):
     return pila.pop()
 
 
-# ── Evaluador Prefija ─────────────────────────────────────────
+
 def evaluar_prefija(expresion):
     tokens = expresion.strip().split()
     pila = Pila()
@@ -92,7 +91,6 @@ def evaluar_prefija(expresion):
     return pila.pop()
 
 
-# ── Menú principal ────────────────────────────────────────────
 def main():
     while True:
         print("\n usa espcacios para separar los nunmeros y signos")
