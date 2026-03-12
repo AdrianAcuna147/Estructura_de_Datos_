@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class InterfazCola(ABC):
 
     @abstractmethod
-    def tamanio(self) -> int:
+    def tamaño(self) -> int:
         """Retorna el número de elementos en la Cola"""
         pass
 
