@@ -1,3 +1,14 @@
+"""
+Integrantes
+Adrian Mauricio Acuña Tejeda 
+Freddy Armando Che Fernández
+Chacon Olvera Christian Andre
+Jose Natanael Canche Pech
+Gomez Ek Adolfo Rene
+Chac Chay José Cristóbal
+Zyon Maximo Rodríguez González
+"""
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 import matplotlib.pyplot as plt
