@@ -1,12 +1,16 @@
+import tkinter as tk
+from tkinter import ttk, messagebox
+
+
 # ---------------- MÉTODOS DE ORDENAMIENTO ---------------- #
 
-def intercalacion(lista):
+def intercalacion(lista, pasos):
     mitad = len(lista) // 2
     izquierda = sorted(lista[:mitad])
     derecha = sorted(lista[mitad:])
 
-    print("\nSublista izquierda ordenada:", izquierda)
-    print("Sublista derecha ordenada:", derecha)
+    pasos.append(f"Sublista izquierda ordenada: {izquierda}")
+    pasos.append(f"Sublista derecha ordenada: {derecha}")
 
     resultado = []
     i = j = 0
@@ -19,31 +23,32 @@ def intercalacion(lista):
             resultado.append(derecha[j])
             j += 1
 
-        print("Proceso:", resultado)
+        pasos.append(f"Proceso: {resultado}")
 
     resultado.extend(izquierda[i:])
     resultado.extend(derecha[j:])
 
-    print("Resultado final:", resultado)
+    pasos.append(f"Resultado final: {resultado}")
+
     return resultado
 
 
-def mezcla_directa(lista):
+def mezcla_directa(lista, pasos):
     if len(lista) <= 1:
         return lista
 
     medio = len(lista) // 2
-    izquierda = mezcla_directa(lista[:medio])
-    derecha = mezcla_directa(lista[medio:])
+    izquierda = mezcla_directa(lista[:medio], pasos)
+    derecha = mezcla_directa(lista[medio:], pasos)
 
-    return fusionar(izquierda, derecha)
+    return fusionar(izquierda, derecha, pasos)
 
 
-def fusionar(izquierda, derecha):
+def fusionar(izquierda, derecha, pasos):
     resultado = []
     i = j = 0
 
-    print("\nDividiendo:", izquierda, "|", derecha)
+    pasos.append(f"Dividiendo: {izquierda} | {derecha}")
 
     while i < len(izquierda) and j < len(derecha):
         if izquierda[i] < derecha[j]:
@@ -53,30 +58,31 @@ def fusionar(izquierda, derecha):
             resultado.append(derecha[j])
             j += 1
 
-        print("Mezclando:", resultado)
+        pasos.append(f"Mezclando: {resultado}")
 
     resultado.extend(izquierda[i:])
     resultado.extend(derecha[j:])
 
-    print("Fusionado:", resultado)
+    pasos.append(f"Fusionado: {resultado}")
+
     return resultado
 
 
-def mezcla_equilibrada(lista):
+def mezcla_equilibrada(lista, pasos):
     if len(lista) <= 1:
         return lista
 
     mitad = len(lista) // 2
-    izquierda = mezcla_equilibrada(lista[:mitad])
-    derecha = mezcla_equilibrada(lista[mitad:])
+    izquierda = mezcla_equilibrada(lista[:mitad], pasos)
+    derecha = mezcla_equilibrada(lista[mitad:], pasos)
 
-    return combinar(izquierda, derecha)
+    return combinar(izquierda, derecha, pasos)
 
 
-def combinar(izquierda, derecha):
+def combinar(izquierda, derecha, pasos):
     resultado = []
 
-    print("\nBloques:", izquierda, "|", derecha)
+    pasos.append(f"Bloques: {izquierda} | {derecha}")
 
     while izquierda and derecha:
         if izquierda[0] < derecha[0]:
@@ -84,60 +90,156 @@ def combinar(izquierda, derecha):
         else:
             resultado.append(derecha.pop(0))
 
-        print("Combinando:", resultado)
+        pasos.append(f"Combinando: {resultado}")
 
     resultado += izquierda
     resultado += derecha
 
-    print("Bloque ordenado:", resultado)
+    pasos.append(f"Bloque ordenado: {resultado}")
+
     return resultado
 
 
-# ---------------- INTERFAZ EN TERMINAL ---------------- #
+# ---------------- INTERFAZ GRÁFICA ---------------- #
 
-def menu():
-    while True:
-        print("\n====== MÉTODOS DE ORDENAMIENTO ======")
-        print("1. Intercalación")
-        print("2. Mezcla Directa")
-        print("3. Mezcla Equilibrada")
-        print("4. Salir")
+def ordenar():
+    entrada = entry_numeros.get()
 
-        opcion = input("Selecciona una opción: ")
+    try:
+        numeros = [int(x.strip()) for x in entrada.split(",")]
+    except:
+        messagebox.showerror(
+            "Error",
+            "Ingresa números válidos separados por comas."
+        )
+        return
 
-        if opcion == "4":
-            print("Programa finalizado.")
-            break
+    metodo = combo_metodo.get()
 
-        entrada = input("Ingresa números separados por comas: ")
+    if not metodo:
+        messagebox.showwarning(
+            "Advertencia",
+            "Selecciona un método."
+        )
+        return
 
-        try:
-            numeros = [int(x.strip()) for x in entrada.split(",")]
-        except:
-            print("Error: Ingresa solo números válidos.")
-            continue
+    pasos = []
 
-        print("\nLista original:", numeros)
+    resultado_texto.delete("1.0", tk.END)
 
-        if opcion == "1":
-            metodo = "Intercalación"
-            resultado = intercalacion(numeros)
+    if metodo == "Intercalación":
+        resultado = intercalacion(numeros, pasos)
 
-        elif opcion == "2":
-            metodo = "Mezcla Directa"
-            resultado = mezcla_directa(numeros)
+    elif metodo == "Mezcla Directa":
+        resultado = mezcla_directa(numeros, pasos)
 
-        elif opcion == "3":
-            metodo = "Mezcla Equilibrada"
-            resultado = mezcla_equilibrada(numeros)
+    elif metodo == "Mezcla Equilibrada":
+        resultado = mezcla_equilibrada(numeros, pasos)
 
-        else:
-            print("Opción no válida.")
-            continue
+    else:
+        return
 
-        print(f"\nMétodo seleccionado: {metodo}")
-        print("Lista ordenada final:", resultado)
+    resultado_texto.insert(
+        tk.END,
+        f"Lista original: {numeros}\n\n"
+    )
+
+    for paso in pasos:
+        resultado_texto.insert(tk.END, paso + "\n")
+
+    resultado_texto.insert(
+        tk.END,
+        f"\nLista ordenada final: {resultado}"
+    )
 
 
-# Ejecutar programa
-menu()
+# ---------------- VENTANA ---------------- #
+
+ventana = tk.Tk()
+ventana.title("Métodos de Ordenamiento")
+ventana.geometry("850x700")
+ventana.config(bg="#f0f0f0")
+
+
+# -------- TÍTULO -------- #
+titulo = tk.Label(
+    ventana,
+    text="Sistema de Métodos de Ordenamiento",
+    font=("Arial", 18, "bold"),
+    bg="#f0f0f0"
+)
+titulo.pack(pady=15)
+
+
+# -------- ENTRADA -------- #
+label_numeros = tk.Label(
+    ventana,
+    text="Ingresa números separados por comas:",
+    font=("Arial", 12),
+    bg="#f0f0f0"
+)
+label_numeros.pack()
+
+entry_numeros = tk.Entry(
+    ventana,
+    width=60,
+    font=("Arial", 12)
+)
+entry_numeros.pack(pady=10)
+
+
+# -------- MÉTODO -------- #
+label_metodo = tk.Label(
+    ventana,
+    text="Selecciona método:",
+    font=("Arial", 12),
+    bg="#f0f0f0"
+)
+label_metodo.pack()
+
+combo_metodo = ttk.Combobox(
+    ventana,
+    values=[
+        "Intercalación",
+        "Mezcla Directa",
+        "Mezcla Equilibrada"
+    ],
+    state="readonly",
+    width=30,
+    font=("Arial", 11)
+)
+combo_metodo.pack(pady=10)
+
+
+# -------- BOTÓN -------- #
+boton_ordenar = tk.Button(
+    ventana,
+    text="Ordenar",
+    command=ordenar,
+    bg="#4CAF50",
+    fg="white",
+    font=("Arial", 13)
+)
+boton_ordenar.pack(pady=15)
+
+
+# -------- RESULTADOS -------- #
+label_resultado = tk.Label(
+    ventana,
+    text="Proceso y Resultado:",
+    font=("Arial", 12),
+    bg="#f0f0f0"
+)
+label_resultado.pack()
+
+resultado_texto = tk.Text(
+    ventana,
+    width=95,
+    height=25,
+    font=("Consolas", 10)
+)
+resultado_texto.pack(pady=10)
+
+
+# -------- EJECUCIÓN -------- #
+ventana.mainloop()
