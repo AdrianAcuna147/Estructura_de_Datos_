@@ -1,5 +1,5 @@
-from interna import OrdenacionInterna
-from externa import OrdenacionExterna
+from internas import OrdenacionInterna
+from externas import OrdenacionExterna
 
 def main():
     datos = [54, 26, 93, 17, 77, 31, 44, 55, 20]
