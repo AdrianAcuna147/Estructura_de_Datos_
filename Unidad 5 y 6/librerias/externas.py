@@ -1,49 +1,60 @@
-class OrdenacionExterna:
-    @staticmethod
-    def intercalacion(lista_a, lista_b):
-        resultado = []
-        i = j = 0
-        while i < len(lista_a) and j < len(lista_b):
-            if lista_a[i] < lista_b[j]:
-                resultado.append(lista_a[i])
+"""
+Librería de Algoritmos de Ordenamiento Externo y Mezcla
+Archivo: externas.py
+"""
+
+def intercalacion(arr1, arr2):
+    """Intercala dos listas previamente ordenadas en una sola lista ordenada."""
+    result = []
+    i = j = 0
+    while i < len(arr1) and j < len(arr2):
+        if arr1[i] < arr2[j]:
+            result.append(arr1[i])
+            i += 1
+        else:
+            result.append(arr2[j])
+            j += 1
+    result.extend(arr1[i:])
+    result.extend(arr2[j:])
+    return result
+
+
+def mezcla_directa(arr):
+    """Ordena una lista usando el algoritmo de Mezcla Directa (Merge Sort)."""
+    if len(arr) <= 1:
+        return arr
+    mid = len(arr) // 2
+    left = mezcla_directa(arr[:mid])
+    right = mezcla_directa(arr[mid:])
+    return intercalacion(left, right)
+
+
+def mezcla_equilibrada(arr):
+    """Ordena una lista localizando tramos naturalmente ordenados."""
+    if len(arr) <= 1:
+        return arr
+
+    def buscar_tramos(lista):
+        tramos = []
+        n = len(lista)
+        i = 0
+        while i < n:
+            inicio = i
+            while i < n - 1 and lista[i] <= lista[i + 1]:
                 i += 1
-            else:
-                resultado.append(lista_b[j])
-                j += 1
-        resultado.extend(lista_a[i:])
-        resultado.extend(lista_b[j:])
-        return resultado
+            i += 1
+            tramos.append(lista[inicio:i])
+        return tramos
 
-    @staticmethod
-    def mezcla_directa(arr):
-        if len(arr) <= 1:
-            return arr
-        medio = len(arr) // 2
-        izq = OrdenacionExterna.mezcla_directa(arr[:medio])
-        der = OrdenacionExterna.mezcla_directa(arr[medio:])
-        return OrdenacionExterna.intercalacion(izq, der)
-
-    @staticmethod
-    def mezcla_equilibrada(arr):
-        # Enfoque de 'Natural Merge': identifica secuencias ya ordenadas (runs)
-        if not arr: return []
-        runs = []
-        new_run = [arr[0]]
-        
-        for i in range(1, len(arr)):
-            if arr[i] >= arr[i-1]:
-                new_run.append(arr[i])
+    tramos = buscar_tramos(arr)
+    while len(tramos) > 1:
+        nuevos_tramos = []
+        for i in range(0, len(tramos), 2):
+            if i + 1 < len(tramos):
+                fusionado = intercalacion(tramos[i], tramos[i + 1])
+                nuevos_tramos.append(fusionado)
             else:
-                runs.append(new_run)
-                new_run = [arr[i]]
-        runs.append(new_run)
-        
-        while len(runs) > 1:
-            merged_runs = []
-            for i in range(0, len(runs), 2):
-                if i + 1 < len(runs):
-                    merged_runs.append(OrdenacionExterna.intercalacion(runs[i], runs[i+1]))
-                else:
-                    merged_runs.append(runs[i])
-            runs = merged_runs
-        return runs[0]
+                nuevos_tramos.append(tramos[i])
+        tramos = nuevos_tramos
+
+    return tramos[0] if tramos else []
